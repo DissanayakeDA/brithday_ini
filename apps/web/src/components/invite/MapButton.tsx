@@ -2,12 +2,11 @@
 
 import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
-import { EVENT } from "@/lib/config";
 
-export function MapButton() {
+export function MapButton({ url }: { url: string }) {
   return (
     <motion.a
-      href={EVENT.mapsUrl}
+      href={url}
       target="_blank"
       rel="noopener noreferrer"
       whileTap={{ scale: 0.97 }}

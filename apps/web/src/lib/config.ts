@@ -2,6 +2,7 @@
  * Centralised configuration: event details + environment-driven URLs.
  * Change event copy here once and it updates everywhere.
  */
+import { CELEBRANT_NAME, EVENT_NAME } from "@bday/shared";
 
 function clean(url: string | undefined, fallback: string): string {
   return (url ?? fallback).replace(/\/$/, "");
@@ -11,15 +12,27 @@ export const API_URL = clean(process.env.NEXT_PUBLIC_API_URL, "http://localhost:
 export const SITE_URL = clean(process.env.NEXT_PUBLIC_SITE_URL, "http://localhost:3000");
 
 export const EVENT = {
-  title: "40th Birthday Celebration",
-  dateLabel: "19th July",
-  /** ISO date/time used by the countdown timer. */
-  dateISO: process.env.NEXT_PUBLIC_EVENT_DATE ?? "2026-07-19T19:00:00+05:30",
-  venue: "Shangri-La Hotel, Colombo",
-  mapsUrl:
-    process.env.NEXT_PUBLIC_MAPS_URL ??
-    "https://www.google.com/maps/search/?api=1&query=Shangri-La+Hotel+Colombo",
+  title: EVENT_NAME,
+  celebrant: CELEBRANT_NAME,
+  /**
+   * Fixed running order shown on the invite. Date & venue stay admin-set
+   * (they vary per setup); this timeline is part of the event copy.
+   */
+  schedule: [
+    { label: "Party", time: "6:00 PM – 11:45 PM" },
+    { label: "Cake Cutting", time: "7:30 PM" },
+    { label: "Dinner Buffet", time: "8:30 PM – 10:30 PM" },
+  ],
 } as const;
+
+/**
+ * Timezone the event happens in. Used to format the date/time label and to
+ * interpret the admin's date picker. Fixed because the audience is local
+ * (Colombo, +05:30, no daylight saving) — keeps server/client output identical.
+ */
+export const EVENT_TIMEZONE = "Asia/Colombo";
+/** Matching fixed UTC offset for `EVENT_TIMEZONE` (Asia/Colombo has no DST). */
+export const EVENT_TZ_OFFSET = "+05:30";
 
 export const GOOGLE_FORM = {
   baseUrl: process.env.NEXT_PUBLIC_GOOGLE_FORM_BASE_URL ?? "",

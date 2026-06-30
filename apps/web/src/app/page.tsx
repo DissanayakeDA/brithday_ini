@@ -1,10 +1,16 @@
 import Link from "next/link";
 import { ArrowRight, PartyPopper } from "lucide-react";
-import { EVENT } from "@/lib/config";
+import { EVENT_DETAILS, formatEventDateTime } from "@bday/shared";
+import { EVENT, EVENT_TIMEZONE } from "@/lib/config";
+import { PortraitAvatar } from "@/components/invite/PortraitAvatar";
 
 export default function HomePage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4 text-center">
+      <div className="mb-8">
+        <PortraitAvatar name={EVENT.celebrant} priority />
+      </div>
+
       <div className="flex items-center gap-2 text-gold-light">
         <PartyPopper size={20} />
         <span className="text-xs font-medium uppercase tracking-[0.3em]">
@@ -16,7 +22,8 @@ export default function HomePage() {
         {EVENT.title}
       </h1>
       <p className="mt-3 text-cream/60">
-        {EVENT.venue} &middot; {EVENT.dateLabel}
+        {EVENT_DETAILS.venue} &middot;{" "}
+        {formatEventDateTime(EVENT_DETAILS.dateTime, EVENT_TIMEZONE)}
       </p>
 
       <p className="mt-8 max-w-md text-sm text-cream/50">

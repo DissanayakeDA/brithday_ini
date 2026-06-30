@@ -1,4 +1,8 @@
-import type { CreateGuestInput, Guest, UpdateGuestInput } from "@bday/shared";
+import type {
+  CreateGuestInput,
+  Guest,
+  UpdateGuestInput,
+} from "@bday/shared";
 import { API_URL } from "./config";
 
 /** Error carrying the HTTP status so callers can distinguish 404 from 500. */

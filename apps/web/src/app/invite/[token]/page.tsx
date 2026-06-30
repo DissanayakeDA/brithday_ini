@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { buildInvitationMessage } from "@bday/shared";
+import { buildInvitationMessage, EVENT_DETAILS, EVENT_NAME } from "@bday/shared";
 import { ApiError, guestsApi } from "@/lib/api";
-import { InvitationView } from "@/components/invite/InvitationView";
+import { InviteExperience } from "@/components/invite/InviteExperience";
 
 // Always render on demand — guest data is dynamic and must not be cached.
 export const dynamic = "force-dynamic";
@@ -24,7 +24,7 @@ export async function generateMetadata({
   const guest = await getGuest(params.token);
   if (!guest) return { title: "Invitation not found" };
   return {
-    title: `${guest.name} — 40th Birthday Celebration`,
+    title: `${guest.name} — ${EVENT_NAME}`,
     description: buildInvitationMessage(guest.name, guest.invitationScope),
   };
 }
@@ -36,5 +36,5 @@ export default async function InvitePage({
 }) {
   const guest = await getGuest(params.token);
   if (!guest) notFound();
-  return <InvitationView guest={guest} />;
+  return <InviteExperience guest={guest} event={EVENT_DETAILS} />;
 }

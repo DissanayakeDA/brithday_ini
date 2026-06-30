@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 import { AlertCircle, Loader2, PartyPopper, Users } from "lucide-react";
 import { toast } from "sonner";
 import type { CreateGuestInput, Guest } from "@bday/shared";
-import { SCOPE_LABELS } from "@bday/shared";
+import { EVENT_DETAILS, formatEventDateTime, SCOPE_LABELS } from "@bday/shared";
 import { guestsApi } from "@/lib/api";
-import { EVENT } from "@/lib/config";
+import { EVENT, EVENT_TIMEZONE } from "@/lib/config";
 import { InviteeForm } from "@/components/admin/InviteeForm";
 import { GeneratedLinkCard } from "@/components/admin/GeneratedLinkCard";
 import { InviteeTable } from "@/components/admin/InviteeTable";
@@ -116,8 +116,7 @@ export default function AdminInviteePage() {
           {EVENT.title}
         </h1>
         <p className="text-sm text-cream/60">
-          {EVENT.venue} &middot; {EVENT.dateLabel}. Add guests below to generate and
-          share personal invitation links.
+          {`${EVENT_DETAILS.venue} · ${formatEventDateTime(EVENT_DETAILS.dateTime, EVENT_TIMEZONE)}`}
         </p>
       </motion.header>
 

@@ -17,27 +17,31 @@ function diff(targetMs: number) {
 export function Countdown({ dateISO }: { dateISO: string }) {
   const target = new Date(dateISO).getTime();
   const valid = !Number.isNaN(target);
-  const [time, setTime] = useState(() => diff(target));
+  // Start as null so the server-rendered HTML and the first client render
+  // match. The live value is only computed after mount, avoiding a hydration
+  // mismatch on the time-dependent seconds digit.
+  const [time, setTime] = useState<ReturnType<typeof diff> | null>(null);
 
   useEffect(() => {
     if (!valid) return;
+    setTime(diff(target));
     const id = window.setInterval(() => setTime(diff(target)), 1000);
     return () => window.clearInterval(id);
   }, [target, valid]);
 
   if (!valid) return null;
 
-  if (time.total === 0) {
+  if (time && time.total === 0) {
     return (
       <p className="font-display text-2xl text-gradient-gold">The celebration has begun! 🎉</p>
     );
   }
 
   const units = [
-    { label: "Days", value: time.days },
-    { label: "Hours", value: time.hours },
-    { label: "Minutes", value: time.minutes },
-    { label: "Seconds", value: time.seconds },
+    { label: "Days", value: time?.days },
+    { label: "Hours", value: time?.hours },
+    { label: "Minutes", value: time?.minutes },
+    { label: "Seconds", value: time?.seconds },
   ];
 
   return (
@@ -50,7 +54,7 @@ export function Countdown({ dateISO }: { dateISO: string }) {
           className="glass flex min-w-[68px] flex-col items-center px-3 py-3 sm:min-w-[84px] sm:px-4"
         >
           <span className="font-display text-2xl tabular-nums text-cream sm:text-4xl">
-            {String(unit.value).padStart(2, "0")}
+            {unit.value === undefined ? "--" : String(unit.value).padStart(2, "0")}
           </span>
           <span className="mt-1 text-[0.6rem] uppercase tracking-[0.18em] text-cream/50 sm:text-xs">
             {unit.label}

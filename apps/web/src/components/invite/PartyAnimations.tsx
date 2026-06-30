@@ -1,17 +1,32 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 const COLORS = ["#e7cd86", "#c8a24c", "#e0739a", "#f6f1e7", "#9c7a2f"];
+
+type Speck = {
+  id: number;
+  left: number;
+  delay: number;
+  duration: number;
+  size: number;
+  color: string;
+  rounded: boolean;
+};
 
 /**
  * Decorative, non-interactive background: drifting confetti specks and a few
  * floating glowing orbs. Pointer-events disabled so it never blocks the UI.
  */
 export function PartyAnimations() {
-  const confetti = useMemo(
-    () =>
+  // Confetti uses Math.random(), so it can only be generated on the client.
+  // Generating it after mount keeps the server HTML and first client render in
+  // sync, avoiding a hydration mismatch on the inline styles.
+  const [confetti, setConfetti] = useState<Speck[]>([]);
+
+  useEffect(() => {
+    setConfetti(
       Array.from({ length: 26 }, (_, i) => ({
         id: i,
         left: Math.random() * 100,
@@ -21,8 +36,8 @@ export function PartyAnimations() {
         color: COLORS[i % COLORS.length],
         rounded: Math.random() > 0.5,
       })),
-    [],
-  );
+    );
+  }, []);
 
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
