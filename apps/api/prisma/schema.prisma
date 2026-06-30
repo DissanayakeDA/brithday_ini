@@ -1,0 +1,25 @@
+// Prisma schema for the birthday invitation app.
+// Datasource: Neon Postgres (any Postgres works).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Guest {
+  id              String   @id @default(uuid())
+  name            String
+  // Unique, URL-safe token used in the public invite link (/invite/:token).
+  // The DB-level unique constraint guarantees no two guests share a token.
+  token           String   @unique
+  // Stored as a string; validated against the InvitationScope enum in the API.
+  invitationScope String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("guests")
+}

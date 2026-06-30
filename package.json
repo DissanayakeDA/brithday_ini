@@ -1,0 +1,30 @@
+{
+  "name": "brithday-ini",
+  "version": "1.0.0",
+  "private": true,
+  "description": "40th Birthday invitation app - Next.js frontend + NestJS API + Neon Postgres",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build:shared": "npm run build -w @bday/shared",
+    "build": "npm run build:shared && npm run build -w @bday/api && npm run build -w @bday/web",
+    "dev": "npm run build:shared && concurrently -n api,web -c green,cyan \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "npm run dev -w @bday/api",
+    "dev:web": "npm run dev -w @bday/web",
+    "start:api": "npm run start -w @bday/api",
+    "start:web": "npm run start -w @bday/web",
+    "db:generate": "npm run db:generate -w @bday/api",
+    "db:migrate": "npm run db:migrate -w @bday/api",
+    "db:deploy": "npm run db:deploy -w @bday/api",
+    "db:studio": "npm run db:studio -w @bday/api",
+    "typecheck": "npm run build:shared && tsc -p apps/api/tsconfig.json --noEmit && tsc -p apps/web/tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  }
+}
