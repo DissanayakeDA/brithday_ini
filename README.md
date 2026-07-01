@@ -1,4 +1,4 @@
-# 🎉 Grushon's Birthday Invitation App
+# 🎉 Grashon's Birthday Invitation App
 
 A monorepo for a premium birthday-invitation site. The host adds invitees, picks an
 invitation scope, and the app auto-generates a **unique personal invitation link** for each
@@ -12,12 +12,12 @@ brithday_ini/
 └─ apps/web/          # Next.js (App Router) + Tailwind + Framer Motion
 ```
 
-| Layer | Tech |
-|------|------|
+| Layer    | Tech                                                                     |
+| -------- | ------------------------------------------------------------------------ |
 | Frontend | Next.js 14 (App Router), TypeScript, Tailwind CSS, Framer Motion, sonner |
-| Backend | NestJS 10, Prisma, class-validator |
-| Database | Postgres (Neon) |
-| Monorepo | npm workspaces |
+| Backend  | NestJS 10, Prisma, class-validator                                       |
+| Database | Postgres (Neon)                                                          |
+| Monorepo | npm workspaces                                                           |
 
 ---
 
@@ -47,22 +47,22 @@ cp apps/web/.env.example apps/web/.env
 
 **apps/api/.env**
 
-| Variable | Description |
-|---|---|
-| `DATABASE_URL` | Neon **pooled** connection string (Neon → Connection Details → *Pooled connection*). |
-| `PORT` | API port (default `3001`). |
-| `FRONTEND_ORIGIN` | Allowed browser origin(s) for CORS. Comma-separate multiple. |
-| `PUBLIC_SITE_URL` | Public base URL of the **frontend** — used to build each `formUrl`. |
+| Variable          | Description                                                                          |
+| ----------------- | ------------------------------------------------------------------------------------ |
+| `DATABASE_URL`    | Neon **pooled** connection string (Neon → Connection Details → _Pooled connection_). |
+| `PORT`            | API port (default `3001`).                                                           |
+| `FRONTEND_ORIGIN` | Allowed browser origin(s) for CORS. Comma-separate multiple.                         |
+| `PUBLIC_SITE_URL` | Public base URL of the **frontend** — used to build each `formUrl`.                  |
 
 **apps/web/.env**
 
-| Variable | Description |
-|---|---|
-| `NEXT_PUBLIC_API_URL` | Base URL of the API (e.g. `http://localhost:3001`). |
-| `NEXT_PUBLIC_SITE_URL` | Public base URL of this site. |
-| `NEXT_PUBLIC_EVENT_DATE` | (Optional) ISO date for the countdown. |
-| `NEXT_PUBLIC_MAPS_URL` | (Optional) Google Maps link for the venue. |
-| `NEXT_PUBLIC_GOOGLE_FORM_BASE_URL` + `NEXT_PUBLIC_GF_ENTRY_*` | (Optional) RSVP pre-fill — see §7. |
+| Variable                                                      | Description                                         |
+| ------------------------------------------------------------- | --------------------------------------------------- |
+| `NEXT_PUBLIC_API_URL`                                         | Base URL of the API (e.g. `http://localhost:3001`). |
+| `NEXT_PUBLIC_SITE_URL`                                        | Public base URL of this site.                       |
+| `NEXT_PUBLIC_EVENT_DATE`                                      | (Optional) ISO date for the countdown.              |
+| `NEXT_PUBLIC_MAPS_URL`                                        | (Optional) Google Maps link for the venue.          |
+| `NEXT_PUBLIC_GOOGLE_FORM_BASE_URL` + `NEXT_PUBLIC_GF_ENTRY_*` | (Optional) RSVP pre-fill — see §7.                  |
 
 ## 4. Create the database tables
 
@@ -97,20 +97,20 @@ type Guest = {
   name: string;
   token: string;
   invitationScope: InvitationScope;
-  formUrl: string;     // derived: `${SITE_URL}/invite/${token}`
+  formUrl: string; // derived: `${SITE_URL}/invite/${token}`
   createdAt: string;
 };
 ```
 
 **API endpoints** (`apps/api`):
 
-| Method | Path | Purpose |
-|---|---|---|
-| `POST` | `/guests` | Create invitee + auto-generate token |
-| `GET` | `/guests` | List all invitees |
-| `GET` | `/guests/:token` | Fetch one by token (public invite page) |
-| `PATCH` | `/guests/:id` | Edit name / scope |
-| `DELETE` | `/guests/:id` | Delete invitee |
+| Method   | Path             | Purpose                                 |
+| -------- | ---------------- | --------------------------------------- |
+| `POST`   | `/guests`        | Create invitee + auto-generate token    |
+| `GET`    | `/guests`        | List all invitees                       |
+| `GET`    | `/guests/:token` | Fetch one by token (public invite page) |
+| `PATCH`  | `/guests/:id`    | Edit name / scope                       |
+| `DELETE` | `/guests/:id`    | Delete invitee                          |
 
 **Token generation** (`apps/api/src/common/token.util.ts`): `slug(name)` + optional scope +
 random suffix, e.g. `nimal-perera-a8x92`, `saman-family-k72q1`, `dinuka-couple-p9x21`.
@@ -118,9 +118,9 @@ Uniqueness is guaranteed by a DB unique constraint, with automatic retry on coll
 
 **Scope wording** (public invite page):
 
-- single → *"Hi {name}, you are invited to Grushon's Birthday Celebration."*
-- couple → *"Hi {name}, you and your partner are invited…"*
-- family → *"Hi {name}, you and your family are invited…"*
+- single → _"Hi {name}, you are invited to Grashon's Birthday Celebration."_
+- couple → _"Hi {name}, you and your partner are invited…"_
+- family → _"Hi {name}, you and your family are invited…"_
 
 ---
 
@@ -143,19 +143,23 @@ If these are left blank, the RSVP button still appears and shows a friendly
 ## 8. Deploy
 
 ### Database (Neon)
+
 Create a Neon project, copy the **pooled** connection string into the API's `DATABASE_URL`,
 then run migrations against it: `npm run db:deploy`.
 
 ### Frontend → Vercel
+
 1. Import the repo into Vercel. Set **Root Directory** to `apps/web`.
 2. Build command `npm run build`, output handled by Next automatically.
 3. Add env vars: `NEXT_PUBLIC_API_URL` (your deployed API URL), `NEXT_PUBLIC_SITE_URL`
    (your Vercel domain), and any optional Google Form vars.
 
 ### Backend (NestJS) — choose one
+
 > NestJS is a long-running Node server, so it doesn't deploy to Vercel like the frontend.
 
 **Option A — Render / Railway (recommended):**
+
 - New **Web Service** from this repo, root `apps/api`.
 - Build: `npm install && npm run db:generate && npm run build && npm run db:deploy`
 - Start: `npm run start`
@@ -163,6 +167,7 @@ then run migrations against it: `npm run db:deploy`.
   `PUBLIC_SITE_URL` (your Vercel domain).
 
 **Option B — Vercel serverless:**
+
 - Wrap the Nest app in a serverless handler and deploy as a separate Vercel project.
   Note the cold-start trade-off. (Render/Railway is simpler for a persistent API.)
 
@@ -175,7 +180,7 @@ Finally, point the frontend's `NEXT_PUBLIC_API_URL` at the deployed API and set 
 
 1. Go to **`/admin/invitees`**.
 2. Type the **guest name**.
-3. Choose the **invitation scope**: *Single Person*, *Couple*, or *Family*.
+3. Choose the **invitation scope**: _Single Person_, _Couple_, or _Family_.
 4. Click **Generate invitation link** — a unique link appears instantly.
 5. Click **Copy link**, or **Share on WhatsApp** to send the pre-written message.
 6. Manage anyone in the list below: copy/share, **edit** details, or **delete**.
@@ -191,11 +196,11 @@ and shows wording matched to their scope.
 
 ## Useful scripts (run from the repo root)
 
-| Script | Description |
-|---|---|
-| `npm run dev` | Run API + web together (dev) |
-| `npm run build` | Build shared → api → web |
-| `npm run db:migrate` | Create/apply a dev migration |
-| `npm run db:deploy` | Apply migrations (prod) |
-| `npm run db:studio` | Open Prisma Studio |
+| Script                | Description                  |
+| --------------------- | ---------------------------- |
+| `npm run dev`         | Run API + web together (dev) |
+| `npm run build`       | Build shared → api → web     |
+| `npm run db:migrate`  | Create/apply a dev migration |
+| `npm run db:deploy`   | Apply migrations (prod)      |
+| `npm run db:studio`   | Open Prisma Studio           |
 | `npm run db:generate` | Regenerate the Prisma client |

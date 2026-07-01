@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { CalendarHeart, MapPin } from "lucide-react";
 import type { EventSettings, Guest } from "@bday/shared";
 import {
+  buildGreetingMessage,
   buildInvitationMessage,
   buildMapsUrl,
   formatEventDateTime,
@@ -18,6 +19,7 @@ import { MapEmbed } from "./MapEmbed";
 import { ScheduleTimeline } from "./ScheduleTimeline";
 import { PartyAnimations } from "./PartyAnimations";
 import { PortraitAvatar } from "./PortraitAvatar";
+import { CelebrantHero } from "./CelebrantHero";
 import { BackgroundMusic } from "./BackgroundMusic";
 
 const fadeUp = {
@@ -37,6 +39,7 @@ export function InvitationView({
   event: EventSettings;
 }) {
   const message = buildInvitationMessage(guest.name, guest.invitationScope);
+  const greeting = buildGreetingMessage(guest.invitationScope);
   const mapQuery = resolveMapQuery(event);
   const mapsUrl = buildMapsUrl(mapQuery);
   const dateLabel = formatEventDateTime(event.dateTime, EVENT_TIMEZONE);
@@ -47,6 +50,19 @@ export function InvitationView({
       <BackgroundMusic />
 
       <section className="relative z-10 w-full max-w-2xl text-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.94, y: 12 }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            transition: { duration: 0.9, ease: "easeOut" },
+          }}
+          className="mb-8"
+        >
+          <CelebrantHero name={EVENT.celebrant} />
+        </motion.div>
+
         <motion.p
           custom={0}
           variants={fadeUp}
@@ -85,7 +101,7 @@ export function InvitationView({
           className="glass relative mx-auto mt-24 max-w-xl bg-ink/60 px-6 pb-6 pt-16 sm:px-8 sm:pb-8 sm:pt-20"
         >
           {/* Celebrant headshot overlapping the card's top edge — frames the
-              greeting as a personal note from Grushon. */}
+              greeting as a personal note from Grashon. */}
           <div className="absolute -top-12 left-1/2 -translate-x-1/2 sm:-top-14">
             <PortraitAvatar name={EVENT.celebrant} priority />
           </div>
@@ -93,7 +109,12 @@ export function InvitationView({
           <p className="text-[0.7rem] uppercase tracking-[0.3em] text-gold-light/80">
             From {EVENT.celebrant}
           </p>
-          <p className="mt-3 font-display text-xl text-cream sm:text-2xl">{message}</p>
+          <p className="mt-3 font-display text-xl text-cream sm:text-2xl">
+            {message}
+          </p>
+          <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-cream/70 sm:text-base">
+            {greeting}
+          </p>
 
           <div className="mt-6 flex flex-col items-center gap-3 text-cream/80 sm:flex-row sm:justify-center sm:gap-6">
             <span className="inline-flex items-center gap-2">

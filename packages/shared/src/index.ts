@@ -5,9 +5,9 @@
  */
 
 /** The celebrant being honoured. Single source of truth for their name. */
-export const CELEBRANT_NAME = "Grushon Fernando";
+export const CELEBRANT_NAME = "Grashon Fernando";
 /** Public-facing event name, woven into the headline and invitation copy. */
-export const EVENT_NAME = "Grushon's Birthday Celebration";
+export const EVENT_NAME = "Grashon's Birthday Celebration";
 
 export type InvitationScope = "single" | "couple" | "family";
 
@@ -101,7 +101,11 @@ export function formatEventDateTime(iso: string, timeZone?: string): string {
 }
 
 /** Ordered list of valid scopes — drives dropdowns and validation. */
-export const INVITATION_SCOPES: InvitationScope[] = ["single", "couple", "family"];
+export const INVITATION_SCOPES: InvitationScope[] = [
+  "single",
+  "couple",
+  "family",
+];
 
 /** Human-friendly labels for the admin UI. */
 export const SCOPE_LABELS: Record<InvitationScope, string> = {
@@ -125,7 +129,10 @@ export function isInvitationScope(value: unknown): value is InvitationScope {
  * The headline message shown on the public invitation page. The wording
  * adapts to the guest's invitation scope.
  */
-export function buildInvitationMessage(name: string, scope: InvitationScope): string {
+export function buildInvitationMessage(
+  name: string,
+  scope: InvitationScope,
+): string {
   const guest = name.trim() || "there";
   switch (scope) {
     case "couple":
@@ -135,5 +142,22 @@ export function buildInvitationMessage(name: string, scope: InvitationScope): st
     case "single":
     default:
       return `Hi ${guest}, you are invited to ${EVENT_NAME}.`;
+  }
+}
+
+/**
+ * A warm, personal note from the celebrant shown beneath the headline on the
+ * invitation. Kept separate from `buildInvitationMessage` so the headline stays
+ * short while this carries the heartfelt welcome; the wording adapts to scope.
+ */
+export function buildGreetingMessage(scope: InvitationScope): string {
+  switch (scope) {
+    case "couple":
+      return "As I step into a new chapter and celebrate my 40th birthday, I would be truly honoured to share this special evening with you & your partner. Come join us for a night of laughter, warm company, meaningful moments, and memories worth keeping.";
+    case "family":
+      return "As I step into a new chapter and celebrate my 40th birthday, I would be truly honoured to share this special evening with you & your family. Come join us for a night of laughter, warm company, meaningful moments, and memories worth keeping.";
+    case "single":
+    default:
+      return "As I step into a new chapter and celebrate my 40th birthday, I would be truly honoured to share this special evening with you. Come join us for a night of laughter, warm company, meaningful moments, and memories worth keeping.";
   }
 }
