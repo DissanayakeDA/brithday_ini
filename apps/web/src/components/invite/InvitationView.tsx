@@ -12,9 +12,11 @@ import {
   SCOPE_TAGLINE,
 } from "@bday/shared";
 import { EVENT, EVENT_TIMEZONE } from "@/lib/config";
+import { toCalendarEvent } from "@/lib/calendar";
 import { Countdown } from "./Countdown";
 import { RsvpButton } from "./RsvpButton";
 import { MapButton } from "./MapButton";
+import { AddToCalendarButton } from "./AddToCalendarButton";
 import { MapEmbed } from "./MapEmbed";
 import { ScheduleTimeline } from "./ScheduleTimeline";
 import { PartyAnimations } from "./PartyAnimations";
@@ -43,6 +45,7 @@ export function InvitationView({
   const mapQuery = resolveMapQuery(event);
   const mapsUrl = buildMapsUrl(mapQuery);
   const dateLabel = formatEventDateTime(event.dateTime, EVENT_TIMEZONE);
+  const calendarEvent = toCalendarEvent(event);
 
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 py-16">
@@ -101,7 +104,7 @@ export function InvitationView({
           className="glass relative mx-auto mt-24 max-w-xl bg-ink/60 px-6 pb-6 pt-16 sm:px-8 sm:pb-8 sm:pt-20"
         >
           {/* Celebrant headshot overlapping the card's top edge — frames the
-              greeting as a personal note from Grashon. */}
+              greeting as a personal note from Grashan. */}
           <div className="absolute -top-12 left-1/2 -translate-x-1/2 sm:-top-14">
             <PortraitAvatar name={EVENT.celebrant} priority />
           </div>
@@ -170,6 +173,7 @@ export function InvitationView({
           className="mt-10 flex flex-wrap items-center justify-center gap-3"
         >
           <RsvpButton guest={guest} />
+          <AddToCalendarButton event={calendarEvent} />
           <MapButton url={mapsUrl} />
         </motion.div>
 

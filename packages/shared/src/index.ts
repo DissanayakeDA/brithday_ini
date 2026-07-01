@@ -5,9 +5,9 @@
  */
 
 /** The celebrant being honoured. Single source of truth for their name. */
-export const CELEBRANT_NAME = "Grashon Fernando";
+export const CELEBRANT_NAME = "Grashan Fernando";
 /** Public-facing event name, woven into the headline and invitation copy. */
-export const EVENT_NAME = "Grashon's Birthday Celebration";
+export const EVENT_NAME = "Grashan's Birthday Celebration";
 
 export type InvitationScope = "single" | "couple" | "family";
 
@@ -98,6 +98,84 @@ export function formatEventDateTime(iso: string, timeZone?: string): string {
     ...tz,
   }).format(date);
   return `${datePart} · ${timePart}`;
+}
+
+/** Add `minutes` to an ISO timestamp, returning a new ISO 8601 string. */
+export function addMinutesToIso(iso: string, minutes: number): string {
+  return new Date(new Date(iso).getTime() + minutes * 60_000).toISOString();
+}
+
+/** Details needed to create a calendar entry, independent of provider. */
+export interface CalendarEvent {
+  title: string;
+  /** Optional longer note shown in the calendar entry's body. */
+  description?: string;
+  location: string;
+  /** ISO 8601 start time. */
+  start: string;
+  /** ISO 8601 end time. */
+  end: string;
+}
+
+/** Render an ISO time as a UTC calendar stamp: `YYYYMMDDTHHMMSSZ`. */
+function toCalendarStamp(iso: string): string {
+  return new Date(iso)
+    .toISOString()
+    .replace(/[-:]/g, "")
+    .replace(/\.\d{3}Z$/, "Z");
+}
+
+/** Escape reserved characters in ICS text values (RFC 5545). */
+function escapeIcsText(value: string): string {
+  return value
+    .replace(/\\/g, "\\\\")
+    .replace(/;/g, "\\;")
+    .replace(/,/g, "\\,")
+    .replace(/\r?\n/g, "\\n");
+}
+
+/**
+ * "Add to Google Calendar" link — opens a prefilled event the guest can save
+ * to their Google account in one tap. Times are sent as UTC stamps so the
+ * entry lands at the correct local moment wherever the guest opens it.
+ */
+export function buildGoogleCalendarUrl(event: CalendarEvent): string {
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: event.title,
+    dates: `${toCalendarStamp(event.start)}/${toCalendarStamp(event.end)}`,
+    location: event.location,
+  });
+  if (event.description) params.set("details", event.description);
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
+/**
+ * ICS (iCalendar) file body for the event — the format Apple Calendar (iPhone,
+ * Mac), Outlook, and most other apps understand. Deliver it as a download so
+ * the guest's device opens it in their default calendar app.
+ */
+export function buildIcsContent(event: CalendarEvent): string {
+  const stamp = toCalendarStamp(event.start);
+  const lines = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Grashan Birthday//Invitation//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    "BEGIN:VEVENT",
+    `UID:${stamp}-grashan-birthday@invitation`,
+    `DTSTAMP:${stamp}`,
+    `DTSTART:${stamp}`,
+    `DTEND:${toCalendarStamp(event.end)}`,
+    `SUMMARY:${escapeIcsText(event.title)}`,
+    `LOCATION:${escapeIcsText(event.location)}`,
+  ];
+  if (event.description) {
+    lines.push(`DESCRIPTION:${escapeIcsText(event.description)}`);
+  }
+  lines.push("END:VEVENT", "END:VCALENDAR");
+  return lines.join("\r\n");
 }
 
 /** Ordered list of valid scopes — drives dropdowns and validation. */

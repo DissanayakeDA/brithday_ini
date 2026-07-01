@@ -213,7 +213,7 @@ export function WelcomeGate({
                 You&apos;re Invited
               </p>
               <p className="font-display text-4xl leading-none text-gradient-gold">
-                Grashon&apos;s
+                Grashan&apos;s
               </p>
               <p className="font-display text-base tracking-wide text-cream/90">
                 Birthday Celebration

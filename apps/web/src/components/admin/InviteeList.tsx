@@ -64,7 +64,12 @@ export function InviteeList({ guests, onEdit, onDelete }: Props) {
             </a>
 
             <div className="mt-3 flex flex-wrap gap-2">
-              <CopyLinkButton link={guest.formUrl} label="Copy" className="flex-1" />
+              <CopyLinkButton
+                link={guest.formUrl}
+                name={guest.name}
+                label="Copy"
+                className="flex-1"
+              />
               <WhatsAppShareButton
                 name={guest.name}
                 link={guest.formUrl}

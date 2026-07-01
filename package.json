@@ -2,7 +2,7 @@
   "name": "brithday-ini",
   "version": "1.0.0",
   "private": true,
-  "description": "Grashon's Birthday invitation app - Next.js frontend + NestJS API + Neon Postgres",
+  "description": "Grashan's Birthday invitation app - Next.js frontend + NestJS API + Neon Postgres",
   "workspaces": [
     "packages/*",
     "apps/*"

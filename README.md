@@ -1,4 +1,4 @@
-# 🎉 Grashon's Birthday Invitation App
+# 🎉 Grashan's Birthday Invitation App
 
 A monorepo for a premium birthday-invitation site. The host adds invitees, picks an
 invitation scope, and the app auto-generates a **unique personal invitation link** for each
@@ -118,7 +118,7 @@ Uniqueness is guaranteed by a DB unique constraint, with automatic retry on coll
 
 **Scope wording** (public invite page):
 
-- single → _"Hi {name}, you are invited to Grashon's Birthday Celebration."_
+- single → _"Hi {name}, you are invited to Grashan's Birthday Celebration."_
 - couple → _"Hi {name}, you and your partner are invited…"_
 - family → _"Hi {name}, you and your family are invited…"_
 

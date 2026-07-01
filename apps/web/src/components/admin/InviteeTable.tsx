@@ -55,7 +55,12 @@ export function InviteeTable({ guests, onEdit, onDelete }: Props) {
                 </td>
                 <td className="px-5 py-4">
                   <div className="flex items-center justify-end gap-1.5">
-                    <CopyLinkButton link={guest.formUrl} variant="icon" label="Copy link" />
+                    <CopyLinkButton
+                      link={guest.formUrl}
+                      name={guest.name}
+                      variant="icon"
+                      label="Copy invitation message"
+                    />
                     <WhatsAppShareButton
                       name={guest.name}
                       link={guest.formUrl}

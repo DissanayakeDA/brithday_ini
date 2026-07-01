@@ -49,7 +49,12 @@ export function GeneratedLinkCard({ guest, onDismiss }: Props) {
             </div>
 
             <div className="mt-4 flex flex-wrap gap-2">
-              <CopyLinkButton link={guest.formUrl} variant="solid" label="Copy link" />
+              <CopyLinkButton
+                link={guest.formUrl}
+                name={guest.name}
+                variant="solid"
+                label="Copy message"
+              />
               <WhatsAppShareButton name={guest.name} link={guest.formUrl} variant="solid" />
               <a
                 href={guest.formUrl}

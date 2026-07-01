@@ -26,6 +26,12 @@ export const EVENT = {
 } as const;
 
 /**
+ * How long the celebration runs, in minutes — used to set the end time on
+ * calendar entries. Party runs 6:00 PM – 11:45 PM (5h 45m).
+ */
+export const EVENT_DURATION_MINUTES = 345;
+
+/**
  * Timezone the event happens in. Used to format the date/time label and to
  * interpret the admin's date picker. Fixed because the audience is local
  * (Colombo, +05:30, no daylight saving) — keeps server/client output identical.
