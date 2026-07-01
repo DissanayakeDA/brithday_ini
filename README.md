@@ -204,3 +204,5 @@ and shows wording matched to their scope.
 | `npm run db:deploy`   | Apply migrations (prod)      |
 | `npm run db:studio`   | Open Prisma Studio           |
 | `npm run db:generate` | Regenerate the Prisma client |
+
+by kyndexLabs
