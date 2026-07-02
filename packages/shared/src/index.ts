@@ -51,7 +51,7 @@ export interface EventSettings {
 
 /** The single, fixed set of event details shown on every invitation. */
 export const EVENT_DETAILS: EventSettings = {
-  venue: "Shangri-La Colombo",
+  venue: "Shangri-La Colombo- Spice Room",
   address: "Shangri-La Hotel, Colombo",
   dateTime: "2026-07-18T18:00:00+05:30",
 };

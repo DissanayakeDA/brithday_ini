@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/Toaster";
 
 export const metadata: Metadata = {
   title: EVENT_NAME,
-  description: `You're invited to ${EVENT_NAME} at Shangri-La Colombo on 18th July.`,
+  description: `You're invited to ${EVENT_NAME} at Shangri-La Colombo- Spice Room on 18th July.`,
 };
 
 export default function RootLayout({
